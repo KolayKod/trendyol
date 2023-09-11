@@ -52,14 +52,9 @@
             if(is_array($getQueryData) && count($getQueryData)>0 ){
             			$query = http_build_query($getQueryData);
             		 }
-            		 
-            		 
-	    	$this->baseUrl = sprintf($this->baseUrl, $this->partnerId);
-
-	    	
-	    $this->query= 	$this->baseUrl.$appendPath."?".$query;
-	    	
-		 
+           		 		 
+	    	$this->baseUrl = sprintf($this->baseUrl, $this->partnerId);	
+	    $this->query= 	$this->baseUrl.$appendPath."?".$query;	    		 
    } 
    
 	
@@ -85,38 +80,7 @@
 	
 
 	
-	public function sendRequest($method = "GET"){
-	    
-	  
-
-		$header = array();
-		$header[] = "Authorization: Basic ".base64_encode($this->apiKey.":".$this->apiSecret);
-		$header[] = "Content-Type: application/json";
-		$header[] = "User-Agent: $this->partnerId - SelfIntegration";
-
-		if ($method == 'POST') { $header[] = "Content-Length: " . strlen($this->requestData); }
-
-		$this->curl = curl_init(); 
-
-		curl_setopt($this->curl, CURLOPT_URL,$this->query);
-		curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
-		curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header); 
-		
-		if ($method == 'POST') { curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->requestData); }	
-			
-		$this->result = curl_exec($this->curl);
-		$this->getinfo = curl_getinfo($this->curl);
-		
-		
-		if ($this->result === false) {
-           $this->result = curl_error($this->curl);
-        }
-
-		//print_r($this->getinfo);
-		 return $this->result;  
-		 curl_close($this->curl);
-	}
+	
 
 	public function __call($variable,$pars){
 	    
@@ -204,9 +168,6 @@
 
 	    $this->getRequestUrl("/products",$queryData);
 	    
-	    
-	
-	    
       $result_curl = $this->sendRequest();
       
 	  return $this->result = json_decode($result_curl);       
@@ -291,7 +252,22 @@
 	 
    } 
 
-
+   public  function filterVariantAttributes($attributeData){
+        
+		$return =(object)[];
+	$idToValue = ["47"=>"color","338"=>"size","92"=>"boyutEbat"];
+	//  $idToValue = ["47","338","92"];
+	
+	foreach($attributeData as $attribute){
+		
+			if(isset($idToValue[$attribute->attributeId])){
+				
+				$return->{$idToValue[$attribute->attributeId]} = $attribute->attributeValue;
+			}
+	}
+	
+	return  $return; 
+	}
 
    public function updatePriceAndInventory($requestData =""){
        
@@ -402,7 +378,7 @@
 
 
 
-   function listPaths(array $array=[], string $parent="", array &$names=[]):array
+   public function listPaths(array $array=[], string $parent="", array &$names=[]):array
    {
    
 	  foreach($array as $data){
@@ -438,22 +414,43 @@
 		return str_replace($templateVeri, $dinamikVeri, $ham_text);	 
 	}
    
-    public  function filterVariantAttributes($attributeData){
-        
-        $return =(object)[];
-       $idToValue = ["47"=>"color","338"=>"size","92"=>"boyutEbat"];
-     //  $idToValue = ["47","338","92"];
-       
-       foreach($attributeData as $attribute){
-           
-			if(isset($idToValue[$attribute->attributeId])){
-			    
-				$return->{$idToValue[$attribute->attributeId]} = $attribute->attributeValue;
-			}
-       }
-       
-      return  $return; 
-    }
+    
+    
+
+	public function sendRequest($method = "GET"){
+	    
+	  
+
+		$header = array();
+		$header[] = "Authorization: Basic ".base64_encode($this->apiKey.":".$this->apiSecret);
+		$header[] = "Content-Type: application/json";
+		$header[] = "User-Agent: $this->partnerId - SelfIntegration";
+
+		if ($method == 'POST') { $header[] = "Content-Length: " . strlen($this->requestData); }
+
+		$this->curl = curl_init(); 
+
+		curl_setopt($this->curl, CURLOPT_URL,$this->query);
+		curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
+		curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header); 
+		
+		if ($method == 'POST') { curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->requestData); }	
+			
+		$this->result = curl_exec($this->curl);
+		$this->getinfo = curl_getinfo($this->curl);
+		
+		
+		if ($this->result === false) {
+           $this->result = curl_error($this->curl);
+        }
+
+		//print_r($this->getinfo);
+		 return $this->result;  
+		 curl_close($this->curl);
+	}
+
+
 
     function __destruct(){
 		
