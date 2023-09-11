@@ -4,3 +4,17 @@ Bu uygulama ile trendyol satıcı paneline  bağlantı yapıp ürün ve sipariş
 ```
 $ composer require kolaykod/trendyol
 ```
+
+
+```php
+$sellerId="";
+$apiKey ="";
+$apiSecret ="";
+
+
+ $trendyol = new trendyol($sellerId,$apiKey,$apiSecret);
+
+  $trenyolProducts =    $trendyol->getProduct(["onSale"=>"true","brandIds"=>"58545,8787"]);
+
+
+```
