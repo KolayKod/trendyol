@@ -172,7 +172,19 @@
       
 	  return $this->result = json_decode($result_curl);       
    } 
+   
+   public function productCacheCreate(array $queryData =[]){
+       
+        $products =   $this->getProduct($queryData);
+    
+		foreach($products as $product ){
 
+
+	}
+   
+ } 
+   
+ 
    public function productConvertGroupModel($partnerProducts =""){
                           
 	       $return   =[];
@@ -203,9 +215,9 @@
 					unset($productMain['platformListingId']);
 					unset($productMain['batchRequestId']);
 				
-				//	unset($productMain['rejected']);
-				//	unset($productMain['rejectReasonDetails']);
-				//	unset($productMain['blacklisted']);
+					unset($productMain['rejected']);
+				   unset($productMain['rejectReasonDetails']);
+				   unset($productMain['blacklisted']);
 					
 			
 					
