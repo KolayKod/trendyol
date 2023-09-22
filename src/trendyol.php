@@ -172,72 +172,44 @@
  } 
    
  
-   public function productConvertGroupModel($partnerProducts =""){
-                          
+   public function productGroupByModelCode($partnerProducts =""){
+                            productModelGropup
 	       $return   =[];
 	       $variants =[];
 	   
-	      
+
+          
+
+	   
 	      foreach( $partnerProducts as  $product){
 	          
 	                $product = (array)$product;
-	                $productMain = (array)$product;
+	                $productMain =[];
+		      $productMain["title"] =
 	              
-					unset($productMain['barcode']);
-					unset($productMain['salePrice']);
-					unset($productMain['listPrice']);
-					unset($productMain['quantity']);
-					unset($productMain['stockCode']);
-					unset($productMain['productCode']);
-					unset($productMain['onSale']);
-					unset($productMain['locked']);
-					unset($productMain['lastPriceChangeDate']);
-					unset($productMain['lastStockChangeDate']);
-					unset($productMain['stockId']);
-					unset($productMain['approved']);
-					unset($productMain['archived']);
-					unset($productMain['batchRequestId']);
-					unset($productMain['hasActiveCampaign']);
-					unset($productMain['stockUnitType']);
-					unset($productMain['platformListingId']);
-					unset($productMain['batchRequestId']);
-				
-					unset($productMain['rejected']);
-				   unset($productMain['rejectReasonDetails']);
-				   unset($productMain['blacklisted']);
 					
-			
-					
-					unset($productMain['description']);
-					//unset($productMain['images']);
-					
-					/*
-					  * rekabet analizi için 
-					  * açıklama kısmı kaldırılacak
-					  * resimlerden bir tanesi getirilecek sadece.
-					*/
 	                   
 	              
                     $return[$product["productContentId"]]["totalQuantity"]   += $product['quantity']; 
 	                $return[$product["productContentId"]]["variants"][$product['productCode']] = [
-																				"barcode"=>$product['barcode'],
-																				"salePrice"=>$product['salePrice'],
-																				"listPrice"=>$product['listPrice'],
-																				"quantity"=>$product['quantity'],
-																				"stockCode"=>$product['stockCode'],
-																				"productCode"=>$product['productCode'],
-																				"lastPriceChangeDate"=>$product['lastPriceChangeDate'],
-																				"lastStockChangeDate"=>$product['lastStockChangeDate'],
-																				"stockId"=>$product['stockId'],
-																				"onSale"=>$product['onSale'],
-																				"locked"=>$product['locked'],
-																				"approved"=>$product['approved'],
-																				"archived"=>$product['archived'],
-																				"blacklisted"=>$product['blacklisted'],
-																				"productContentId"=>$product['productContentId'],
-																				"stockUnitType"=>$product['stockUnitType'],
-																				"attributes"=>$this->filterVariantAttributes($product["attributes"]),
-																				];
+													"barcode"=>$product['barcode'],
+													"salePrice"=>$product['salePrice'],
+													"listPrice"=>$product['listPrice'],
+													"quantity"=>$product['quantity'],
+													"stockCode"=>$product['stockCode'],
+													"productCode"=>$product['productCode'],
+													"lastPriceChangeDate"=>$product['lastPriceChangeDate'],
+													"lastStockChangeDate"=>$product['lastStockChangeDate'],
+													"stockId"=>$product['stockId'],
+													"onSale"=>$product['onSale'],
+													"locked"=>$product['locked'],
+													"approved"=>$product['approved'],
+													"archived"=>$product['archived'],
+													"blacklisted"=>$product['blacklisted'],
+													"productContentId"=>$product['productContentId'],
+													"stockUnitType"=>$product['stockUnitType'],
+													"attributes"=>$this->filterVariantAttributes($product["attributes"]),
+													];
 					
                      $return[$product["productContentId"]] =  array_merge($return[$product["productContentId"]], $productMain);
 	      }
