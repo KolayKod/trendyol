@@ -7,31 +7,18 @@
    */
   class trendyol{
 	//const facade = 'tendyol'; 
-	private $baseUrl      = "https://api.trendyol.com/sapigw/suppliers/%s";
-	public $apiKey    = "";   
+    private $baseUrl      = "https://api.trendyol.com/sapigw/suppliers/%s";
+    public $apiKey    = "";   
     public $apiSecret   = "";
-	public $partnerId   = "";
+    public $partnerId   = "";
 	
     public $curl         = null;
     public $result       = null;
-	public $query        = null;
-	public $requestData  = null;
+    public $query        = null;
+    public $requestData  = null;
     public $version      = 2;  
     public $getinfo      = 2;
 	
-    /*
-    const factory =
-    [
-        'methods' =>
-        [
-            'register'              => 'Register::do',        
-            'autologin'             => 'Register::autoLogin:this',
-            'activationcomplete'    => 'Register::activationComplete',
-            'resendactivationemail' => 'Register::resendActivationEmail',
-            'returnlink'            => 'UserExtends::returnLink:this'
-        ]
-	];
-	*/
 	
 	public function setOption($params=[]){
 
