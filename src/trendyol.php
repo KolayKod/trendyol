@@ -183,9 +183,19 @@
 	   
 	      foreach( $partnerProducts as  $product){
 	          
-	                $product = (array)$product;
 	                $productMain =[];
-		      $productMain["title"] =
+		      $productMain["title"] =$product->title;
+		      $productMain["vatRate"] =$product->vatRate;
+		      $productMain["productMainId"] =$product->productMainId;
+		      $productMain["pimCategoryId"] =$product->pimCategoryId;
+		      $productMain["images"] =$product->images;
+		      $productMain["categoryName"] =$product->categoryName;
+		      $productMain["description"] =$product->description;
+		      $productMain["brandId"] =$product->brandId;
+		      $productMain["brand"] =$product->brand;
+		 
+		      $product = (array)$product;
+	               
 	              
 					
 	                   
