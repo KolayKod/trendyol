@@ -186,20 +186,17 @@
 	                $productMain =[];
 		      $productMain["title"] =$product->title;
 		      $productMain["vatRate"] =$product->vatRate;
-		      $productMain["productMainId"] =$product->productMainId;
-		      $productMain["pimCategoryId"] =$product->pimCategoryId;
 		      $productMain["images"] =$product->images;
-		      $productMain["categoryName"] =$product->categoryName;
+		      $productMain["image"] =$product->images[0]->url;
 		      $productMain["description"] =$product->description;
-		      $productMain["brandId"] =$product->brandId;
 		      $productMain["brand"] =$product->brand;
-		 
-		      $product = (array)$product;
-	               
-	              
-					
-	                   
-	              
+		       $productMain["categoryName"] =$product->categoryName;
+		       $productMain["pimCategoryId"] =$product->pimCategoryId;
+		       $productMain["brandId"] =$product->brandId;
+		       $productMain["productContentId"] =$product->productContentId;
+		       $productMain["productMainId"] =$product->productMainId;
+	    
+	               $product = (array)$product;
                     $return[$product["productContentId"]]["totalQuantity"]   += $product['quantity']; 
 	                $return[$product["productContentId"]]["variants"][$product['productCode']] = [
 													"barcode"=>$product['barcode'],
@@ -214,7 +211,6 @@
 													"onSale"=>$product['onSale'],
 													"locked"=>$product['locked'],
 													"approved"=>$product['approved'],
-													"archived"=>$product['archived'],
 													"blacklisted"=>$product['blacklisted'],
 													"productContentId"=>$product['productContentId'],
 													"stockUnitType"=>$product['stockUnitType'],
