@@ -173,17 +173,11 @@
    
  
    public function productGroupByModelCode($partnerProducts =""){
-                            productModelGropup
+                            
 	       $return   =[];
-	       $variants =[];
-	   
-
-          
-
-	   
+	    $productMain =[];
 	      foreach( $partnerProducts as  $product){
-	          
-	                $productMain =[];
+	                
 		      $productMain["title"] =$product->title;
 		      $productMain["vatRate"] =$product->vatRate;
 		      $productMain["images"] =$product->images;
@@ -196,37 +190,30 @@
 		       $productMain["productContentId"] =$product->productContentId;
 		       $productMain["productMainId"] =$product->productMainId;
 	    
-	               $product = (array)$product;
-                    $return[$product["productContentId"]]["totalQuantity"]   += $product['quantity']; 
-	                $return[$product["productContentId"]]["variants"][$product['productCode']] = [
-													"barcode"=>$product['barcode'],
-													"salePrice"=>$product['salePrice'],
-													"listPrice"=>$product['listPrice'],
-													"quantity"=>$product['quantity'],
-													"stockCode"=>$product['stockCode'],
-													"productCode"=>$product['productCode'],
-													"lastPriceChangeDate"=>$product['lastPriceChangeDate'],
-													"lastStockChangeDate"=>$product['lastStockChangeDate'],
-													"stockId"=>$product['stockId'],
-													"onSale"=>$product['onSale'],
-													"locked"=>$product['locked'],
-													"approved"=>$product['approved'],
-													"blacklisted"=>$product['blacklisted'],
-													"productContentId"=>$product['productContentId'],
-													"stockUnitType"=>$product['stockUnitType'],
-													"attributes"=>$this->filterVariantAttributes($product["attributes"]),
+	              
+                        $return[$product->productContentId]["totalQuantity"]   += $product->quantity; 
+	                $return[$product->productContentId]["variants"][$product->productCode] = [
+													"barcode"=>$product->barcode,
+													"salePrice"=>$product->salePrice,
+													"listPrice"=>$product->listPrice,
+													"quantity"=>$product->quantity,
+													"stockCode"=>$product->stockCode,
+													"productCode"=>$product->productCode,
+													"lastPriceChangeDate"=>$product->lastPriceChangeDate,
+													"lastStockChangeDate"=>$product->lastStockChangeDate,
+													"stockId"=>$product->stockId,
+													"onSale"=>$product->onSale,
+													"locked"=>$product->locked,
+													"approved"=>$product->approved,
+													"blacklisted"=>$product->blacklisted,
+													"productContentId"=>$product->productContentId,
+													"stockUnitType"=>$product->stockUnitType,
+													"attributes"=>$this->filterVariantAttributes($product->attributes),
 													];
 					
-                     $return[$product["productContentId"]] =  array_merge($return[$product["productContentId"]], $productMain);
+                     $return[$product["productContentId"]] =  array_merge($return[$product->productContentId], $productMain);
 	      }
-	      
-	      
-	     // echo "<pre>";print_r($return); echo "</pre>";
-	      
 	   return $return;
-	 
-	 
-	 
    } 
 
    public  function filterVariantAttributes($attributeData){
