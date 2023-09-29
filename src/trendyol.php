@@ -40,8 +40,8 @@
             			$query = http_build_query($getQueryData);
             		 }
            		 		 
-	    	$this->baseUrl = sprintf($this->baseUrl, $this->partnerId);	
-	    $this->query= 	$this->baseUrl.$appendPath."?".$query;	    		 
+	    	$baseUrl = sprintf($this->baseUrl, $this->partnerId);	
+	    $this->query= 	$baseUrl.$appendPath."?".$query;	    		 
    } 
    
 	
@@ -151,24 +151,16 @@
 
 	
    public function getProduct(array $queryData =[]){
-       
-
+	   
 	    $this->getRequestUrl("/products",$queryData);
-	    
-      $result_curl = $this->sendRequest();
-      
-	  return $this->result = json_decode($result_curl);       
+      $resultCurl = $this->sendRequest();
+      /* verinin json doğrulaması yapılacak*/
+	   return $this->result = json_decode($resultCurl);       
    } 
    
-   public function productCacheCreate(array $queryData =[]){
-       
+   public function productCacheCreate(array $queryData =[]){     
         $products =   $this->getProduct($queryData);
-    
-		foreach($products as $product ){
-
-
-	}
-   
+		foreach($products as $product ){ }
  } 
    
  
