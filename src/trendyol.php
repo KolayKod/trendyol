@@ -184,6 +184,7 @@
 	    
 	              
                         $return[$product->productContentId]["totalQuantity"]   += $product->quantity; 
+                        $return[$product->productContentId]["totalVariant"]   += 1; 
 	                $return[$product->productContentId]["variants"][$product->productCode] = [
 													"barcode"=>$product->barcode,
 													"salePrice"=>$product->salePrice,
@@ -370,7 +371,7 @@
 		return str_replace($templateVeri, $dinamikVeri, $ham_text);	 
 	}
    
-      public function getVariantUrl($contentId,$variantNane,$redirectUrl=false){
+      public function redirectVariantUrl($contentId,$variantNane,$redirectUrl=false){
 	      
 	      $url = "https://www.trendyol.com/brand/productname-p-".$contentId;
 			        $ch = curl_init();
@@ -394,7 +395,7 @@
 	    
 	  
 
-		$header = array();
+		$header = [];
 		$header[] = "Authorization: Basic ".base64_encode($this->apiKey.":".$this->apiSecret);
 		$header[] = "Content-Type: application/json";
 		$header[] = "User-Agent: $this->partnerId - SelfIntegration";
