@@ -76,7 +76,10 @@
 		return $this->result = json_decode($result_curl,1);
 	}
 	
-	
+   public static function create(string $user, string $pass, string $supplier_id)
+    {
+        return new static($user, $pass, $supplier_id);
+    }
 	  
 	
 	
