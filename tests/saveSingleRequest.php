@@ -20,3 +20,14 @@ $get = tryGetRequest($page,$size);
 
  $productCache->saveOnePageData(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
 
+
+if($max==$sayfa){  // istek sayfası son sayfa ise birleştirmeye geç
+
+ try{
+    $c = file_get_contents($baseUrl."/cacheMerge.php?createdCacheId=".$fileId."&max=".$max."&sellerId=".$sellerId);
+    logWrite($fileId." kodlu cache bildirildi");
+}catch (Exception $e){
+    logWrite("HATA OLUŞTU: ".$e->getMessage());
+}
+ 
+}
