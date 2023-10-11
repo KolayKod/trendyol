@@ -33,6 +33,7 @@ function getTrendyol($companyName=""){
 
    $productCache->deleteAllTempCacheFiles(); //tmp klasörünü boşalt.
   $productCache->deleteAllLogFiles(); //logs klasörünü boşalt.
+  $productCache->runAllPageRequest(); //logs klasörünü boşalt.
 
 
 
