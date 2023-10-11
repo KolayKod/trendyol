@@ -31,9 +31,8 @@ function getTrendyol($companyName=""){
       $productCache->mainCacheJsonFile  = $_ENV["mainCacheFolder"]."/".$sellerId."-".$_ENV["mainCacheFileName"];
       $productCache->extraDataFileLocatio   = __DIR__."/tmp";
 
-   $productCache->deleteAllTempCacheFiles(); //tmp klasörünü boşalt.
-  $productCache->deleteAllLogFiles(); //logs klasörünü boşalt.
-  $productCache->runAllPageRequest(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //1. istek atılıyor ve diğer istekler için url tetikleniyor. 
+   $productCache->deleteAllLogAndCacheFilesFiles(); //tmp klasörünü boşalt. logs klasörünü boşalt.
+  $productCache->runAllPageRequest(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //1. istek atılıyor, kaydediliyor ve diğer istekler için url tetikleniyor. 
 
 
 
