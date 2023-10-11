@@ -17,10 +17,10 @@ function getTrendyol($companyName=""){
      return $trendyol;
 }
 
+ $companyName = $_GET["companyName"]??"modagetir";
 
 
-
-    $trendyol  = getTrendyol("modagetir"); 
+    $trendyol  = getTrendyol($companyName); 
 
 
     $productCache = new productCache();
