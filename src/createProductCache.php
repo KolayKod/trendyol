@@ -2,9 +2,9 @@
 class createProductCache extends trendyol {
 
 
-  punlic function saveOnePageData(){
-
-    
+  punlic function saveOnePageData(...$arguments){
+                $productData = $this->getProduct(...$arguments);
+        
   }
 
 
