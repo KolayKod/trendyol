@@ -34,7 +34,7 @@
 		return $this;
 	}
 	
-	public function setRequestUrl($appendPath,$getQueryData=[]){
+	private function setRequestUrl($appendPath,$getQueryData=[]){
 	    
             if(is_array($getQueryData) && count($getQueryData)>0 ){
             			$query = http_build_query($getQueryData);
@@ -150,9 +150,33 @@
    } 
 
 	
-   public function getProduct(array $queryData =[]){
+   public function getProduct(array $filter =[]){
 	   
-	    $this->getRequestUrl("/products",$queryData);
+	   //dateQueryType =CREATED_DATE , LAST_MODIFIED_DATE 
+	   
+	   $queryData = [
+				'approved'       => null,
+				'barcode'     => null,
+				'startDate'    => null,
+				'endDate'       => null,
+				'page'          => null,
+				'dateQueryType'          => null,
+				'size'          => null,
+				'supplierId'          => null,
+				'stockCode'          => null,
+				'archived'          => null,
+				'productMainId'          => null,
+				'onSale'          => null,
+				'rejected'          => null,
+				'blacklisted'          => null,
+				'brandIds'          => null,
+			];
+			if(is_array($filter) and !is_null($filter)){
+				$queryData = array_merge($queryData, $filter);
+			}
+
+	   
+	    $this->setRequestUrl("/products",$queryData);
       $resultCurl = $this->sendRequest();
       /* verinin json doğrulaması yapılacak*/
 	   return $this->result = json_decode($resultCurl);       
