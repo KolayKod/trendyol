@@ -46,8 +46,6 @@ logWrite($toplamUrunSayisi." adet ürün ".$toplamSayfaSayisi." sayfada yer alı
 $sayfaIndex=0;
 $start = setTimer();
 for($i = 0;$i<=$toplamSayfaSayisi;$i++){
-    $tmpCacheFileName = $sellerId."-".$sayfaIndex."-".$_ENV["mainCacheFileName"];
-
     $url = $cacheGeneratorUrlBase."?page=".$sayfaIndex."&size=".$pageSize."&sellerId=".$sellerId."&fileId=".$sayfaIndex."&max=".$toplamSayfaSayisi;
     $context = stream_context_create(['http' => ['timeout' => $_ENV["cronExecuterTimeout"]]]);
     $req = @file_get_contents($url,false,$context);
