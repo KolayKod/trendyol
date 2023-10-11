@@ -22,6 +22,16 @@ class createProductCache extends trendyol {
     
   }
 
+    punlic function deleteAllTempCacheFiles(){
+
+    
+  }
+
+    punlic function deleteAllLogFiles(){
+
+    
+  }
+
 
   
 }
