@@ -38,9 +38,9 @@ class createProductCache extends trendyol {
     
   }
 
-   public function runAllPageRequest(){
+   public function runAllPageRequest(...$arguments){
 
-       $onePageResult = $this->recursiveRequest(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); // birinci istek de kontrollü atılıyor 
+       $onePageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
            
            //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
               if(!isset($onePageResult->content)){exit("Bir hata oluştu. ".serialize($onePageResult));}
