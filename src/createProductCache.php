@@ -38,6 +38,34 @@ class createProductCache extends trendyol {
     
   }
 
+   public function runAllPageRequest(){
+
+       $onePageResult = $this->recursiveRequest(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); // birinci istek de kontrollü atılıyor 
+           
+           //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
+              if(!isset($onePageResult->content)){exit("Bir hata oluştu. ".serialize($onePageResult));}
+           $this->saveArrayToJson($onePageResult);
+      1 
+         $toplamSayfaSayisi = floor($onePageResult->totalElements/$pageSize);
+      
+         logWrite($onePageResult->totalElements." adet ürün ".$toplamSayfaSayisi." sayfada yer alıyor. Pagesize: ".$pageSize);
+         
+         $sayfaIndex=1; // yukarıda 0 inci istek atıldığı  istekler 1 den başlıyor. 
+         for($i = 1;$i<=$toplamSayfaSayisi;$i++){
+             $url = $cacheGeneratorUrlBase."?page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi};
+             $context = stream_context_create(['http' => ['timeout' => 3]]);
+             $req = @file_get_contents($url,false,$context);
+             logWrite("İstek gönderildi : ".$url);
+             $sayfaIndex++;
+         }    
+  }
+
+
+
+
+
+
+   
    public function recursiveRequest(...$arguments){
        $get = $this->getProduct(...$arguments);
           if(!isset($get->content)){
