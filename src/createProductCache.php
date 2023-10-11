@@ -8,7 +8,7 @@ class createProductCache extends trendyol {
   }
 
 
-  punlic function allCacheMearch(){
+  punlic function allCacheMerge(){
 
     
   }
