@@ -55,6 +55,21 @@ class createProductCache extends trendyol {
   }
 
 
+  public   function saveArrayToJson($data,$fileName,$isGzip=false){
+    if($isGzip){
+        $data = gzencode(json_encode($data), 9);
+    }else{
+        $data = json_encode($data);
+    }
+    $put = file_put_contents($fileName, $data);
+    if($put){
+        return $fileName;
+    }else{
+        logWrite("saveArrayToJson çalıştırılamadı : ".serialize($put));
+        return false;
+    }
+}
+
    
 
  
