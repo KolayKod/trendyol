@@ -22,20 +22,32 @@ class createProductCache extends trendyol {
     
   }
 
-    public function deleteAllTempCacheFiles(){
-
     
-  }
 
-    public function deleteAllLogFiles(){
+   function deleteAllTempCacheFiles(){
+       $files = glob($_ENV["mainCacheFolder"].'/tmp/*');
+       foreach($files as $file){
+         if(is_file($file)) {
+           unlink($file);
+         }
+       }
+   }
 
+    public function deleteAllLogAndCacheFilesFiles(){
+               $this->deleteAllTempCacheFiles();
+               $this->deleteAllLogFiles();
     
   }
 
 
    public function deleteAllLogFiles(){
 
-    
+        $files = glob('./logs/*');
+       foreach($files as $file){
+         if(is_file($file)) {
+           unlink($file);
+         }
+       }
   }
 
    public function runAllPageRequest(...$arguments){
