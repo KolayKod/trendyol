@@ -6,8 +6,14 @@ class createProductCache extends trendyol {
   
 
   public function saveOnePageData(...$arguments){
-                $productData = $this->getProduct(...$arguments);
-        
+              
+          $pageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
+           
+           //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
+              if(!isset($pageResult->content)){exit("Bir hata oluştu. ".serialize($pageResult));}
+           $this->saveArrayToJson($pageResult);
+
+     return $pageResult;
   }
 
 
@@ -52,12 +58,8 @@ class createProductCache extends trendyol {
 
    public function runAllPageRequest(...$arguments){
 
-       $onePageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
-           
-           //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
-              if(!isset($onePageResult->content)){exit("Bir hata oluştu. ".serialize($onePageResult));}
-           $this->saveArrayToJson($onePageResult);
-      1 
+            $onePageResult = $this->saveOnePageData(...$arguments);
+       
          $toplamSayfaSayisi = floor($onePageResult->totalElements/$pageSize);
       
          logWrite($onePageResult->totalElements." adet ürün ".$toplamSayfaSayisi." sayfada yer alıyor. Pagesize: ".$pageSize);
