@@ -154,7 +154,7 @@
 
 	
    public function getProduct(array $filter =[]){
-	   
+	    // burada parsametre kontrolü olabilir yanlış parametre girişlerini önlemek için.
 	   //dateQueryType =CREATED_DATE , LAST_MODIFIED_DATE 
 	   
 	   $queryData = [
@@ -185,11 +185,6 @@
 	   return $this->result = json_decode($resultCurl);       
    } 
    
-   public function productCacheCreate(array $queryData =[]){     
-        $products =   $this->getProduct($queryData);
-		foreach($products as $product ){ }
- } 
-   
  
    public function productGroupByModelCode($partnerProducts =""){
                             
@@ -202,14 +197,18 @@
 		      $productMain["images"] =$product->images;
 		      $productMain["image"] =$product->images[0]->url;
 		      $productMain["description"] =$product->description;
-		      $productMain["brand"] =$product->brand;
+		       $productMain["brand"] =$product->brand;
 		       $productMain["categoryName"] =$product->categoryName;
 		       $productMain["pimCategoryId"] =$product->pimCategoryId;
 		       $productMain["brandId"] =$product->brandId;
 		       $productMain["productContentId"] =$product->productContentId;
 		       $productMain["productMainId"] =$product->productMainId;
-	    
-	              
+	                   /*
+                        $return["brands"][$product->brandId] =array("brandName"=>$product->brand,"brandId"=>$product->brandId);
+                        $return["categories"][$product->pimCategoryId] =array("categoryName"=>$product->categoryName,"categoryId"=>$product->pimCategoryId);
+                        $return["totalQuantity"]  += $product->quantity; 
+                        $return["totalVariant"]   += 1; 
+		          */   
                         $return[$product->productContentId]["totalQuantity"]   += $product->quantity; 
                         $return[$product->productContentId]["totalVariant"]   += 1; 
 	                $return[$product->productContentId]["variants"][$product->productCode] = [
@@ -231,7 +230,7 @@
 													"attributes"=>$this->filterVariantAttributes($product->attributes),
 													];
 					
-                     $return[$product["productContentId"]] =  array_merge($return[$product->productContentId], $productMain);
+                     $return[$product->productContentId] =  array_merge($return[$product->productContentId], $productMain);
 	      }
 	   return $return;
    } 
