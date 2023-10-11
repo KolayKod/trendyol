@@ -39,18 +39,16 @@ $get = $trendyol-getProduct(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); 
   $trendyol
 if(!isset($get->content)){exit("Bir hata oluştu. ".serialize($get));}
 
-$toplamUrunSayisi = $get->totalElements;
-$toplamSayfaSayisi = floor($toplamUrunSayisi/$pageSize);
-logWrite($toplamUrunSayisi." adet ürün ".$toplamSayfaSayisi." sayfada yer alıyor. Pagesize: ".$pageSize);
+
+$toplamSayfaSayisi = floor($get->totalElements/$pageSize);
+logWrite($get->totalElements." adet ürün ".$toplamSayfaSayisi." sayfada yer alıyor. Pagesize: ".$pageSize);
 
 $sayfaIndex=0;
-$start = setTimer();
 for($i = 0;$i<=$toplamSayfaSayisi;$i++){
-    $url = $cacheGeneratorUrlBase."?page=".$sayfaIndex."&size=".$pageSize."&sellerId=".$sellerId."&fileId=".$sayfaIndex."&max=".$toplamSayfaSayisi;
-    $context = stream_context_create(['http' => ['timeout' => $_ENV["cronExecuterTimeout"]]]);
+    $url = $cacheGeneratorUrlBase."?page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi};
+    $context = stream_context_create(['http' => ['timeout' => 3]]);
     $req = @file_get_contents($url,false,$context);
-
     logWrite("İstek gönderildi : ".$url);
     $sayfaIndex++;
 }
-$time = getTimer($start);
+
