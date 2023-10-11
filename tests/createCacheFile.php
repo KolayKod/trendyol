@@ -34,21 +34,5 @@ function getTrendyol($companyName=""){
    $productCache->deleteAllTempCacheFiles(); //tmp klasörünü boşalt.
   $productCache->deleteAllLogFiles(); //logs klasörünü boşalt.
 
-$get = $trendyol-getProduct(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //Api'den toplam ürün sayısını alınıyor.
 
-  $trendyol
-if(!isset($get->content)){exit("Bir hata oluştu. ".serialize($get));}
-
-
-$toplamSayfaSayisi = floor($get->totalElements/$pageSize);
-logWrite($get->totalElements." adet ürün ".$toplamSayfaSayisi." sayfada yer alıyor. Pagesize: ".$pageSize);
-
-$sayfaIndex=0;
-for($i = 0;$i<=$toplamSayfaSayisi;$i++){
-    $url = $cacheGeneratorUrlBase."?page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi};
-    $context = stream_context_create(['http' => ['timeout' => 3]]);
-    $req = @file_get_contents($url,false,$context);
-    logWrite("İstek gönderildi : ".$url);
-    $sayfaIndex++;
-}
 
