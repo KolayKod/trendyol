@@ -59,12 +59,12 @@
 	 
 	
 	    
-	public function __construct($params=[]){
-		
-		if(!empty($params)){ $this->setOption($params);}
-		return $this;
+	public function __construct(array $options = []) {
+	    if (!empty($options)) {
+	        $this->setOption($options);
+	    }
 	}
-	
+
 
 	
 	
