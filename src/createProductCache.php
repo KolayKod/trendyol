@@ -5,7 +5,7 @@ class createProductCache extends trendyol {
    public $cacheSavePath =__DIR__."/cache/trendyol/";
   
 
-  public function saveOnePageData(...$arguments){
+  public function saveSinglePage(...$arguments){
               
           $pageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
            
