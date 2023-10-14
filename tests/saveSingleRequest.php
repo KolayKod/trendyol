@@ -18,7 +18,7 @@ $start = setTimer();
 $tryCount = 0;
 $get = tryGetRequest($page,$size);
 
- $productCache->saveOnePageData(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
+ $productCache->saveSinglePage(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
 
 
 if($max==$sayfa){  // istek sayfası son sayfa ise birleştirmeye geç
