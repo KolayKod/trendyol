@@ -3,6 +3,7 @@ $fileId = $_GET["fileId"]??exit("FileId belirtilmedi.");
 $page = $_GET["page"]??exit("Page belirtilmedi.");
 $size = $_GET["size"]??exit("Size belirtilmedi.");
 $max = $_GET["max"]??exit("Max belirtilmedi.");
+$queryString = $_GET["queryString"]??exit("queryString belirtilmedi.");
 
 $fileName = $_ENV["mainCacheFolder"]."/tmp/".$sellerId."-".$fileId."-".$_ENV["mainCacheFileName"];
 
