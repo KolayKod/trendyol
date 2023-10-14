@@ -25,7 +25,7 @@ function getTrendyol($companyName=""){
     $trendyol  = getTrendyol($companyName); 
 
 
-    $productCache = new productCache();
+    $productCache = new createProductCache();
 
     
       $productCache->pageSize  = 5000;
