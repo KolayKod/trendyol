@@ -1,4 +1,14 @@
 <?php
+/*
+sayfa sayfa kayıt işlemi burada gerçekleşecek.
+bursda  ham veri kadı olacak. 
+yani veri formatı değişmeyecek. 
+zaten ön bellek verisi olduğu için 
+fazla yer kaplaması önemli değil. 
+fakat yine de isteğe bağlı veri kayıt formatında işlemler yapılabilir.
+
+*/
+
 $fileId = $_GET["fileId"]??exit("FileId belirtilmedi.");
 $page = $_GET["page"]??exit("Page belirtilmedi.");
 $size = $_GET["size"]??exit("Size belirtilmedi.");
@@ -17,7 +27,7 @@ $allProductsList = array();
 $start = setTimer();
 
 $tryCount = 0;
-$get = tryGetRequest($page,$size);
+
  $productCache = new createProductCache();
  $productCache->saveSinglePage(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
 
