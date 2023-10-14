@@ -3,6 +3,7 @@ class createProductCache extends trendyol {
 
    public $cacheSavePath =__DIR__."/cache/trendyol/";
    public $cacheSavePath =__DIR__."/cache/trendyol/";
+   public $cacheGeneratorUrlBase ="https://product-report.inovakobi.com/saveSingleRequest.php";
   
 
   public function saveSinglePage(...$arguments){
@@ -58,7 +59,7 @@ class createProductCache extends trendyol {
 
    public function runAllPageRequest(...$arguments){
 
-            $onePageResult = $this->saveOnePageData(...$arguments);
+            $onePageResult = $this->saveSinglePage(...$arguments);
        
          $toplamSayfaSayisi = floor($onePageResult->totalElements/$pageSize);
       
