@@ -17,7 +17,7 @@ $start = setTimer();
 
 $tryCount = 0;
 $get = tryGetRequest($page,$size);
-
+ $productCache = new createProductCache();
  $productCache->saveSinglePage(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
 
 
