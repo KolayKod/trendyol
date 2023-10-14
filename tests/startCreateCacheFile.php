@@ -18,6 +18,8 @@ function getTrendyol($companyName=""){
 }
 
  $companyName = $_GET["companyName"]??"modagetir";
+ $page = $_GET["page"]??"modagetir";
+ $size = $_GET["size"]??"5000";
 
 
     $trendyol  = getTrendyol($companyName); 
@@ -32,7 +34,7 @@ function getTrendyol($companyName=""){
       $productCache->extraDataFileLocatio   = __DIR__."/tmp";
 
    $productCache->deleteAllLogAndCacheFilesFiles(); //tmp klasörünü boşalt. logs klasörünü boşalt.
-  $productCache->runAllPageRequest(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //1. istek atılıyor, kaydediliyor ve diğer istekler için url tetikleniyor. 
+  $productCache->runAllPageRequest(["page"=>$page,"size"=>$size,"approved"=>"true"]); //1. istek atılıyor, kaydediliyor ve diğer istekler için url tetikleniyor. 
 
 
 
