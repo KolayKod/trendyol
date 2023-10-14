@@ -14,7 +14,7 @@ class createProductCache extends trendyol {
               if(!isset($pageResult->content)){exit("Bir hata oluştu. ".serialize($pageResult));}
            $this->saveArrayToJson($pageResult);
 
-     return $pageResult;
+     return $pageResult; // veri doğru geldi ve kayıt işlemi doğru ise true dönecek veya data bilgis olacak.
   }
 
 
