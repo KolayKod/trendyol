@@ -1,6 +1,6 @@
 <?php 
 
-include "vendor/autoload.php";
+include "appStart.php";
 
 function getTrendyol($companyName=""){
       $companyData = [];
@@ -29,9 +29,10 @@ function getTrendyol($companyName=""){
     
       $productCache->trendyol   = getTrendyol($companyName); 
       $productCache->pageSize  = 2000;
-      $productCache->cacheFolder  = __DIR__;
-      $productCache->mainCacheJsonFile  = $_ENV["mainCacheFolder"]."/".$sellerId."-".$_ENV["mainCacheFileName"];
-      $productCache->extraDataFileLocation   = __DIR__."/tmp";
+      $productCache->cacheDir  = __DIR__;
+      $productCache->mainCacheFileName  = "{$companyName}-{$page}-product.json";
+     // $productCache->extraDataFileLocation   = __DIR__."/tmp";
+
       
     if($mode ="start"){
       

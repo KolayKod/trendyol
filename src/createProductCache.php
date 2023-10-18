@@ -2,6 +2,7 @@
 class createProductCache{
 
    public $cacheSavePath =__DIR__."resources/cache/trendyol/";
+   public $mainCacheFileName;
    public $trendyol =null;
    public $cacheGeneratorUrlBase ="https://product-report.inovakobi.com/saveSingleRequest.php";
   
@@ -72,10 +73,10 @@ class createProductCache{
     $pageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
      
      //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
-                    $fileName = md5($arguments);
+                 
         if(!isset($pageResult->content)){exit("Bir hata oluştu. ".serialize($pageResult));}
 
-              json::write($pageResult,"$cacheSavePath"."-sayfa-1-". $fileName);
+              json::write($pageResult,$this->cacheDir.$this->mainCacheFileName);
 
         return $pageResult; // veri doğru geldi ve kayıt işlemi doğru ise true dönecek veya data bilgis olacak.
    }
@@ -88,7 +89,7 @@ class createProductCache{
 
        $get = $this->trendyol->getProduct(...$arguments);
           if(!isset($get->content)){
-              logWrite("API: ".$page.". sayfa içeriği getirilemedi. ".serialize($get));
+              logWrite("API: $page sayfa içeriği getirilemedi ".serialize($get));
               if($GLOBALS["recursiveRequestTryCount"]<=3){
                   logWrite("Tekrar deneniyor.. Deneme sayısı: ".$GLOBALS["recursiveRequestTryCount"]);
                   $GLOBALS["recursiveRequestTryCount"]++;
