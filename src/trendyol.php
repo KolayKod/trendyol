@@ -156,24 +156,15 @@
    public function getProduct(array $filter =[]){
 	    // burada parsametre kontrolü olabilir yanlış parametre girişlerini önlemek için.
 	   //dateQueryType =CREATED_DATE , LAST_MODIFIED_DATE 
+	   $queryDataKeys = [
+					'approved', 'barcode', 'startDate', 'endDate', 'page',
+					'dateQueryType', 'size', 'supplierId', 'stockCode', 'archived',
+					'productMainId', 'onSale', 'rejected', 'blacklisted', 'brandIds'
+				];
+	
+	$queryData = array_fill_keys($queryDataKeys, null);
+
 	   
-	   $queryData = [
-				'approved'       => null,
-				'barcode'     => null,
-				'startDate'    => null,
-				'endDate'       => null,
-				'page'          => null,
-				'dateQueryType'          => null,
-				'size'          => null,
-				'supplierId'          => null,
-				'stockCode'          => null,
-				'archived'          => null,
-				'productMainId'          => null,
-				'onSale'          => null,
-				'rejected'          => null,
-				'blacklisted'          => null,
-				'brandIds'          => null,
-			];
 			if(is_array($filter) and !is_null($filter)){
 				$queryData = array_merge($queryData, $filter);
 			}
@@ -363,7 +354,7 @@
 
    public function listPaths(array $array=[], string $parent="", array &$names=[]):array
    {
-   
+              
 	  foreach($array as $data){
 		   if(count($data["subCategories"])>0){
 						   if($parent ==""){

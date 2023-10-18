@@ -67,7 +67,7 @@ class createProductCache extends trendyol {
          
          $sayfaIndex=1; // yukarıda 0 inci istek atıldığı  istekler 1 den başlıyor. 
          for($i = 1;$i<=$toplamSayfaSayisi;$i++){
-             $url = $cacheGeneratorUrlBase."?page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi};
+             $url = $cacheGeneratorUrlBase."?page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi}";
              $context = stream_context_create(['http' => ['timeout' => 3]]);
              $req = @file_get_contents($url,false,$context);
              logWrite("İstek gönderildi : ".$url);
