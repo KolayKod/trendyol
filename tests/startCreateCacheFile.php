@@ -43,9 +43,7 @@ function getTrendyol($companyName=""){
           exit;
     }elseif($mode ="saveSinglePage"){
 
-      $productCache->saveSinglePage(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
-
-
+      $productCache->saveSinglePage(["page"=>$page,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
 
     }  
    

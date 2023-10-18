@@ -17,11 +17,7 @@ public function saveTempData($data){
    
  }
 
-    public function saveMergedProductList($data){
-
-   
- }
-
+ 
 
 
   public  function collectData($type, $id, $name, $isSet) {
