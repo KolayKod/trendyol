@@ -1,22 +1,12 @@
 <?php
-class createProductCache extends trendyol {
+class createProductCache{
 
-   public $cacheSavePath =__DIR__."/cache/trendyol/";
-   public $cacheSavePath =__DIR__."/cache/trendyol/";
+   public $cacheSavePath =__DIR__."resources/cache/trendyol/";
+   public $trendyol =null;
    public $cacheGeneratorUrlBase ="https://product-report.inovakobi.com/saveSingleRequest.php";
   
 
-  public function saveSinglePage(...$arguments){
-              
-          $pageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
-           
-           //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
-              if(!isset($pageResult->content)){exit("Bir hata oluştu. ".serialize($pageResult));}
-           $this->saveArrayToJson($pageResult);
-
-     return $pageResult; // veri doğru geldi ve kayıt işlemi doğru ise true dönecek veya data bilgis olacak.
-  }
-
+  
 
   public function allCacheMerge(){
 
@@ -40,7 +30,7 @@ class createProductCache extends trendyol {
        }
    }
 
-    public function deleteAllLogAndCacheFilesFiles(){
+    public function deleteAllLogAndCacheFiles(){
                $this->deleteAllTempCacheFiles();
                $this->deleteAllLogFiles();
     
@@ -67,7 +57,8 @@ class createProductCache extends trendyol {
          
          $sayfaIndex=1; // yukarıda 0 inci istek atıldığı  istekler 1 den başlıyor. 
          for($i = 1;$i<=$toplamSayfaSayisi;$i++){
-             $url = $cacheGeneratorUrlBase."?page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi}";
+
+             $url = $this->cacheGeneratorUrlBase."?mod=saveSinglePage&page={$sayfaIndex}&size={$pageSize}&sellerId={$sellerId}&fileId={$sayfaIndex}&max={$toplamSayfaSayisi}";
              $context = stream_context_create(['http' => ['timeout' => 3]]);
              $req = @file_get_contents($url,false,$context);
              logWrite("İstek gönderildi : ".$url);
@@ -76,43 +67,42 @@ class createProductCache extends trendyol {
   }
 
 
+  public function saveSinglePage(...$arguments){
+              
+    $pageResult = $this->recursiveRequest(...$arguments); // birinci istek de kontrollü atılıyor 
+     
+     //birinci sayfa dan gelen istek  kontrol ediliyor ve kaydedililiyor. 
+                    $fileName = md5($arguments);
+        if(!isset($pageResult->content)){exit("Bir hata oluştu. ".serialize($pageResult));}
+
+              json::write($pageResult,"$cacheSavePath"."-sayfa-1-". $fileName);
+
+        return $pageResult; // veri doğru geldi ve kayıt işlemi doğru ise true dönecek veya data bilgis olacak.
+   }
 
 
 
 
    
    public function recursiveRequest(...$arguments){
-       $get = $this->getProduct(...$arguments);
+
+       $get = $this->trendyol->getProduct(...$arguments);
           if(!isset($get->content)){
-              logWrite("API: ".$page].". sayfa içeriği getirilemedi. ".serialize($get));
-              if($GLOBALS["tryCount"]<=3){
-                  logWrite("Tekrar deneniyor.. Deneme sayısı: ".$GLOBALS["tryCount"]);
-                  $GLOBALS["tryCount"]++;
-                  $get = tryGetRequest();
+              logWrite("API: ".$page.". sayfa içeriği getirilemedi. ".serialize($get));
+              if($GLOBALS["recursiveRequestTryCount"]<=3){
+                  logWrite("Tekrar deneniyor.. Deneme sayısı: ".$GLOBALS["recursiveRequestTryCount"]);
+                  $GLOBALS["recursiveRequestTryCount"]++;
+                  $get = $this->recursiveRequest();
               }else{
-                  logWrite($GLOBALS["tryCount"]." deneme başarısız oldu, başaramadık abi.");
-                  exit($GLOBALS["tryCount"]." denemeden sonra içerik hala getirilemedi.");
+                  logWrite($GLOBALS["recursiveRequestTryCount"]." deneme başarısız oldu, başaramadık abi.");
+                  exit($GLOBALS["recursiveRequestTryCount"]." denemeden sonra içerik hala getirilemedi.");
               }
           }
           return $get;
   }
 
 
-  public   function saveArrayToJson($data,$fileName,$isGzip=false){
-    if($isGzip){
-        $data = gzencode(json_encode($data), 9);
-    }else{
-        $data = json_encode($data);
-    }
-    $put = file_put_contents($fileName, $data);
-    if($put){
-        return $fileName;
-    }else{
-        logWrite("saveArrayToJson çalıştırılamadı : ".serialize($put));
-        return false;
-    }
-}
-
+ 
    
 
  

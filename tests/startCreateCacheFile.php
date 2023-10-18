@@ -13,28 +13,44 @@ function getTrendyol($companyName=""){
       $companyData["malistore"]      = array("apiKey"=>"i96Rj0wwNslxZVxUUsid","apiSecret"=>"EBAeQBGMiDoiLmvumcTF","partnerId"=>"309562");
      
      if(!isset($companyData["$companyName"])){  echo "Sistem de bulunmayan firma kodu ile işlem yapmaya çalışıyorsunuz."; exit; }
-     $trendyol = new marketPlace\trendyol\trendyol($companyData["$companyName"]);
+     $trendyol = new marketPlace\trendyol($companyData["$companyName"]);
      return $trendyol;
 }
 
  $companyName = $_GET["companyName"]??"modagetir";
- $page = $_GET["page"]??"modagetir";
- $size = $_GET["size"]??"5000";
+ $page = $_GET["page"]??exit("page verisi yok");
+ $size = $_GET["size"]??"1000";
+ $mode = $_GET["mode"]??exit("mode verisi yok");
 
-
-    $trendyol  = getTrendyol($companyName); 
 
 
     $productCache = new createProductCache();
 
     
-      $productCache->pageSize  = 5000;
+      $productCache->trendyol   = getTrendyol($companyName); 
+      $productCache->pageSize  = 2000;
       $productCache->cacheFolder  = __DIR__;
       $productCache->mainCacheJsonFile  = $_ENV["mainCacheFolder"]."/".$sellerId."-".$_ENV["mainCacheFileName"];
-      $productCache->extraDataFileLocatio   = __DIR__."/tmp";
+      $productCache->extraDataFileLocation   = __DIR__."/tmp";
+      
+    if($mode ="start"){
+      
+      $productCache->deleteAllLogAndCacheFiles(); //tmp ve  logs klasörünü boşalt
+      //1. istek atılıyor, kaydediliyor ve diğer istekler için url tetikleniyor. 
+      // istek formatları bütün sayfalara taşınacak
+     $productCache->runAllPageRequest(["page"=>$page,"size"=>$size,"approved"=>"true"]); 
+          exit;
+    }elseif($mode ="saveSinglePage"){
 
-   $productCache->deleteAllLogAndCacheFilesFiles(); //tmp klasörünü boşalt. logs klasörünü boşalt.
-  $productCache->runAllPageRequest(["page"=>$page,"size"=>$size,"approved"=>"true"]); //1. istek atılıyor, kaydediliyor ve diğer istekler için url tetikleniyor. 
+      $productCache->saveSinglePage(["page"=>$sayfa,"size"=>$size,"approved"=>"true"]); //isteği gelen gelen sonucu kaydediyor. 
+
+
+
+    }  
+   
+
+
+
 
 
 

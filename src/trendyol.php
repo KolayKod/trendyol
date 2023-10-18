@@ -1,4 +1,4 @@
-<?php namespace marketPlace\trendyol;
+<?php namespace marketPlace;
    // Versiyon: 0.4 //11-09-2023
 
    /*
