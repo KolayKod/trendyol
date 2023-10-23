@@ -172,8 +172,14 @@
 	   
 	    $this->setRequestUrl("/products",$queryData);
       $resultCurl = $this->sendRequest();
-      /* verinin json doğrulaması yapılacak*/
-	   return $this->result = json_decode($resultCurl);       
+     $resultData =  json_decode($resultCurl)
+     
+	     if(isset($resultData->errors)){
+		    throw new Exception("trendyol veri getirme hatası: " . var_export($resultData->errors,true));
+		}
+ 
+
+	   return $this->result = json_decode($resultData);       
    } 
    
  
