@@ -4,13 +4,16 @@
    /*
     api dönüş türleri arasında ki ortak noktalar tepit edilecek
 	buna göre hata yakalama ve loglama işlemi yapılacak
+
+	(new trendyol("114603","sdfgsf","643545"))->getorder();
+	trendyol::getOrder();
    */
   class trendyol{
 	//const facade = 'tendyol'; 
     private $baseUrl      = "https://api.trendyol.com/sapigw/suppliers/%s";
-    public $apiKey    = "";   
-    public $apiSecret   = "";
-    public $partnerId   = "";
+    private $apiKey    = null;   
+    private $apiSecret   = null;
+    private $partnerId   = null;
 	
     public $curl         = null;
     public $result       = null;
@@ -23,15 +26,17 @@
 	public function setOption($params=[]){
 
 		if(!empty($params)){
-			//foreach($params as $key => $value) {$this->$key = $value;}
-	
-			$this->apiKey      = $params["apiKey"]??"";
-			$this->apiSecret      = $params["apiSecret"]??"";
-			$this->partnerId = $params["partnerId"]??"";
-
-		
+			$this->apiKey     = $params["apiKey"]??"";
+			$this->apiSecret  = $params["apiSecret"]??"";
+			$this->partnerId  = $params["partnerId"]??"";
 		  }
 		return $this;
+	}
+
+	public function __construct(array $options = []) {
+	    if (!empty($options)) {
+	        $this->setOption($options);
+	    }
 	}
 	
 	private function setRequestUrl($appendPath,$getQueryData=[]){
@@ -48,10 +53,9 @@
 	
 	public function setApiData($partnerId,$apiKey,$apiSecret){
 
-			$this->apiKey      = $apiKey??"";
-			$this->apiSecret  = $apiSecret??"";
-			$this->partnerId = $partnerId??"";
-
+		    $this->partnerId   = $partnerId??"";
+		    $this->apiKey      = $apiKey??"";
+			$this->apiSecret   = $apiSecret??"";
 		$this->baseUrl      = sprintf($this->baseUrl, $this->partnerId);
 		return $this; 
 	}
@@ -59,11 +63,7 @@
 	 
 	
 	    
-	public function __construct(array $options = []) {
-	    if (!empty($options)) {
-	        $this->setOption($options);
-	    }
-	}
+	
 
 
 	
