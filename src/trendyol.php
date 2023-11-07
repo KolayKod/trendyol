@@ -1,4 +1,4 @@
-<?php namespace marketPlace;
+<?php namespace trendyol;
    // Versiyon: 0.4 //11-09-2023
 
    /*
