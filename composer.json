@@ -1,13 +1,12 @@
 {
     "name": "kolaykod/trendyol",
-    "description": "trendyol sınıfı",
+    "description": "Trendyol Pazaryeri Entegrasyon Sınıfı",
     "keywords": [
+        "trendyol",
         "php",
-        "pdo",
-        "veritabanı",
-        "database",
-        "redis",
-        "cache"
+        "pazaryeri",
+        "trendyol api",
+        "trendyol sipariş"
     ],
     "type": "library",
     "license": "MIT",
@@ -22,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "simpledb\\": "src"
+            "trendyol\\": "src"
         }
     },
     "minimum-stability": "dev"
