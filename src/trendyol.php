@@ -1,5 +1,5 @@
 <?php namespace trendyol;
-   // Versiyon: 0.4 //11-09-2023
+// Versiyon: 0.5 = 07-11-2023 11:57
 
    /*
     api dönüş türleri arasında ki ortak noktalar tepit edilecek
