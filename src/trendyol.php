@@ -10,12 +10,12 @@
    */
   class trendyol{
 	//const facade = 'tendyol'; 
-    private $baseUrl      = "https://api.trendyol.com/sapigw/suppliers/%s";
-    private $apiKey    = null;   
-    private $apiSecret   = null;
     private $partnerId   = null;
+    private $apiKey      = null;   
+    private $apiSecret   = null;
+    private $baseUrl      = "https://api.trendyol.com/sapigw/suppliers/%s";
 	
-    public $curl         = null;
+  
     public $result       = null;
     public $query        = null;
     public $requestData  = null;
@@ -39,15 +39,7 @@
 	    }
 	}
 	
-	private function setRequestUrl($appendPath,$getQueryData=[]){
-	    
-            if(is_array($getQueryData) && count($getQueryData)>0 ){
-            			$query = http_build_query($getQueryData);
-            		 }
-           		 		 
-	    	$baseUrl = sprintf($this->baseUrl, $this->partnerId);	
-	    $this->query= 	$baseUrl.$appendPath."?".$query;	    		 
-      } 
+	
    
 	
 	
@@ -324,13 +316,7 @@
    
     
    
-   public function queryFormatter($queryData = []) {
-	    $urlQuery = "";
-	    if (is_array($queryData) || is_object($queryData)) {
-	        $urlQuery = http_build_query($queryData);
-	    }
-	    return $urlQuery;
- }
+ 
 
 
 
@@ -357,15 +343,29 @@
 	   return $names;
    }
 
-   public function getUnixTime($dateAndTime = "now", $completeAnd = true) {
-    if ($completeAnd && strpos($dateAndTime, ":") === false) {
-        $dateAndTime .= " 23:59:59";
+
+
+
+   public function getUnixTime($dateTime = "now", $andDate = true) {
+    if ($andDate && strpos($dateTime, ":") === false) {
+        $dateTime .= " 23:59:59";
     }
-    $unixTime = strtotime($dateAndTime) * 1000;
+    $unixTime = strtotime($dateTime) * 1000;
     return $unixTime;
   }
-
-
+public function buildHttpQuery($queryData = []) {
+	    $urlQuery = "";
+	    if (is_array($queryData) || is_object($queryData)) {
+	        $urlQuery = http_build_query($queryData);
+	    }
+	    return $urlQuery;
+ }
+	private function getRequestUrl($appendPath,$queryData=[]){	  
+	       $baseUrl = sprintf($this->baseUrl, $this->partnerId);
+	       $httpQuery = buildHttpQuery($queryData);
+	       $query = $baseUrl.$appendPath."?".$httpQuery; 	
+	    return $query;
+	} 
    
     public function replacer($php_data,$ham_text){					
 		$php_data = (array) $php_data;
