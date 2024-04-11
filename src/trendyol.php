@@ -381,6 +381,14 @@
 	   return $names;
    }
 
+   public function getUnixTime($dateAndTime = "now", $completeAnd = true) {
+    if ($completeAnd && strpos($dateAndTime, ":") === false) {
+        $dateAndTime .= " 23:59:59";
+    }
+    $unixTime = strtotime($dateAndTime) * 1000;
+    return $unixTime;
+  }
+
 
    
     public function replacer($php_data,$ham_text){					
