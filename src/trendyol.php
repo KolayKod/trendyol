@@ -346,15 +346,13 @@
    
     
    
-   public function queryFormetter($query_data=null){
-	   
-	     $query ="";
-	     if(is_array($query_data) && count($query_data)>0 ){
-			$query = http_build_query($query_data);
-		 }
-
-	   return $query;
-   }
+   public function queryFormatter($queryData = []) {
+	    $urlQuery = "";
+	    if (is_array($queryData) || is_object($queryData)) {
+	        $urlQuery = http_build_query($queryData);
+	    }
+	    return $urlQuery;
+ }
 
 
 
