@@ -7,6 +7,23 @@
 
 	(new trendyol("114603","sdfgsf","643545"))->getorder();
 	trendyol::getOrder();
+ ------------------------------------------
+       $userInput = [
+	    'name' => 'John',
+	    'email' => 'john@example.com',
+	    'age' => 30,
+	    'unwanted_field' => 'some value'
+	];
+	
+	$allowedKeys = [
+	    'name' => '',
+	    'email' => '',
+	    "baseparam" => "basevalue"  // Hem varsayılan değer hem de zorunlu
+	];
+	
+	$filteredInput = array_intersect_key($userInput, $allowedKeys);
+	$finalInput = array_merge($allowedKeys, $filteredInput);
+ 
    */
   class trendyol{
 	//const facade = 'tendyol'; 
