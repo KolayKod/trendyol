@@ -136,12 +136,10 @@
    
    
    public function updateProduct($requestData =""){
-
-	   		
-		 $this->setRequestUrl("/products");
-		$this->requestData  = $requestData;
-		$result_curl 		 = $this->sendRequest("PUT");
-		return $this->result = json_decode($result_curl);
+	$this->requestData  = $requestData;	
+	       $requestUrl  = $this->getRequestUrl("/products");
+	      $result_curl  = $this->sendRequest($requestUrl,"PUT");
+	return $this->result = json_decode($result_curl);
    } 
 
 	
@@ -242,13 +240,10 @@
 	}
 
    public function updatePriceAndInventory($requestData =""){
-       
-	          $this->setRequestUrl("/products/price-and-inventory");
-		
-
-		$this->requestData   = json_encode($requestData);
-		$result_curl          = $this->sendRequest("POST");
-		return $this->result = json_decode($result_curl);
+	        $requestUrl   = $this->getRequestUrl("/products/price-and-inventory");
+		$postData     = json_encode($requestData);
+		$result_curl  = $this->sendRequest($requestUrl,"POST",$postData);
+	return $this->result = json_decode($result_curl);
 		/*
 		Burada bir hata kontrolü yok 
 		veriler de hata olup olmadığını anlaamk için
@@ -256,7 +251,7 @@
 		   bütün hata tesip ve loglamalar tek fonksiyon da birleştirilebilir. 
 		   dönüş formatları aynı olduğu sürece sorun yok <div class=""></div>
 		*/       
-	}
+   }
 	
 	
 	
@@ -398,7 +393,7 @@ public function buildHttpQuery($queryData = []) {
 	}
     
 
-	public function sendRequest($method = "GET",$url){
+	public function sendRequest($url,$method = "GET",$requestData=""){
 	    
 	  
 
