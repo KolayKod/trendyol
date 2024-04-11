@@ -315,33 +315,11 @@
    } 
    
    public function errorControl($returnData){
-        
        if(!isset($returnData->errors) && !isset($returnData->error) && isset($returnData->content) ){
-			
                     return true;
-                    
-		 }elseif( isset($returnData->status) && ($returnData->status ==404) ){
-
-			echo  $logMessage =  "404 $returnData->message İşlem de hata mevcut \n";
-			// Logger::report('trendyolGetOrder',$logMessage,"trendyolGetOrder", '10 month');
-			 exit;
-
-		 }elseif(isset($returnData->errors)){
-		     
-			 echo "İşlem de hata mevcut</br>";
-			 print_r($returnData->errors);
-		
-			 exit;
-		 }elseif(isset($returnData->error)){
-		     
-			 echo "İşlem de hata mevcut</br>";
-
-			 print_r($returnData->error);
-		//	 Logger::report('trendyolGetOrder',$returnData->errors["0"]->message,"trendyolGetOrder", '10 month');
-			 exit;
-		 }
-       
-       
+	}else( isset($returnData->status) && ($returnData->status ==404) ){
+			 return false;
+	}  
    }
    
     
@@ -420,7 +398,7 @@
 	}
     
 
-	public function sendRequest($method = "GET"){
+	public function sendRequest($method = "GET",$url){
 	    
 	  
 
@@ -433,7 +411,7 @@
 
 		$this->curl = curl_init(); 
 
-		curl_setopt($this->curl, CURLOPT_URL,$this->query);
+		curl_setopt($this->curl, CURLOPT_URL,$url);
 		curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
 		curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header); 
@@ -442,15 +420,12 @@
 			
 		$this->result = curl_exec($this->curl);
 		$this->getinfo = curl_getinfo($this->curl);
-		
-		
 		if ($this->result === false) {
-           $this->result = curl_error($this->curl);
-        }
+	             $this->result = curl_error($this->curl);
+	        }
 
-		//print_r($this->getinfo);
-		 return $this->result;  
-		 curl_close($this->curl);
+                  curl_close($this->curl);
+		 return $this->result;  	 
 	}
 
 
