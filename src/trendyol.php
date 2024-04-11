@@ -23,7 +23,7 @@
     public $getinfo      = 2;
 	
 	
-	public function setOption($params=[]){
+    public function setOption($params=[]){
 
 		if(!empty($params)){
 			$this->apiKey     = $params["apiKey"]??"";
@@ -31,7 +31,7 @@
 			$this->partnerId  = $params["partnerId"]??"";
 		  }
 		return $this;
-	}
+    }
 
 	public function __construct(array $options = []) {
 	    if (!empty($options)) {
@@ -47,7 +47,7 @@
            		 		 
 	    	$baseUrl = sprintf($this->baseUrl, $this->partnerId);	
 	    $this->query= 	$baseUrl.$appendPath."?".$query;	    		 
-   } 
+      } 
    
 	
 	
