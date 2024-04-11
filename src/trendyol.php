@@ -138,7 +138,7 @@
    public function updateProduct($requestData =""){
 	$this->requestData  = $requestData;	
 	       $requestUrl  = $this->getRequestUrl("/products");
-	      $result_curl  = $this->sendRequest($requestUrl,"PUT");
+	      $result_curl  = $this->sendRequest($requestUrl,"PUT",$requestData);
 	return $this->result = json_decode($result_curl);
    } 
 
@@ -411,7 +411,8 @@ public function buildHttpQuery($queryData = []) {
 		curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $method);
 		curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header); 
 		
-		if ($method == 'POST') { curl_setopt($this->curl, CURLOPT_POSTFIELDS, $this->requestData); }	
+		if ($method == 'POST') { curl_setopt($this->curl, CURLOPT_POSTFIELDS, $requestData); }	
+		if ($method == 'PUT') { curl_setopt($this->curl, CURLOPT_POSTFIELDS, $requestData); }	
 			
 		$this->result = curl_exec($this->curl);
 		$this->getinfo = curl_getinfo($this->curl);
