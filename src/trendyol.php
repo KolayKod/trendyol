@@ -241,7 +241,7 @@
 
    public function updatePriceAndInventory($requestData =""){
 	        $requestUrl   = $this->getRequestUrl("/products/price-and-inventory");
-		$postData     = json_encode($requestData);
+		$postData     =json_encode($requestData);
 		$result_curl  = $this->sendRequest($requestUrl,"POST",$postData);
 	return $this->result = json_decode($result_curl);
 		/*
@@ -255,22 +255,18 @@
 	
 	
 	
-	public function batchRequestData($batchRequestId =""){ 
-	    
-	    
-	    
-	    $this->setRequestUrl("/products/batch-requests/$batchRequestId");
-	    
-		$result_curl = $this->sendRequest();
+  public function batchRequestData($batchRequestId =""){ 
+	   $requestUrl  = $this->getRequestUrl("/products/batch-requests/$batchRequestId");
+		$result_curl = $this->sendRequest($requestUrl);
 		return $this->result = json_decode($result_curl); 
    }
 
   
-	public function getCategories(){ 
+  public function getCategories(){ 
 
 		if(!file_exists('trendyolCategory.json') ){
-           $this->query = "https://api.trendyol.com/sapigw/product-categories";
-			$result_curl = $this->sendRequest();
+           $url= "https://api.trendyol.com/sapigw/product-categories";
+			$result_curl = $this->sendRequest($url);
 			file_put_contents('trendyolCategory.json', $result_curl);
 		}
 		return  $this->result = json_decode(file_get_contents("trendyolCategory.json"),true);
