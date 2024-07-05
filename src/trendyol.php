@@ -394,7 +394,7 @@ public function buildHttpQuery($queryData = []) {
 	            'header'  => "Content-type: application/json\r\n",
 	            'method'  => 'GET'
 	        ]
-	    ];
+	    ]; 
 	
 	    $context = stream_context_create($options);
 	    $response = file_get_contents($url, false, $context);
