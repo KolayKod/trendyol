@@ -385,6 +385,32 @@ public function buildHttpQuery($queryData = []) {
 		}			  	 					
 		return str_replace($templateVeri, $dinamikVeri, $ham_text);	 
 	}
+
+       
+	public function getBrandIdByName($searchName) {
+	   $url = "https://api.trendyol.com/sapigw/brands/by-name?name=". urlencode($searchName);
+	    $options = [
+	        'http' => [
+	            'header'  => "Content-type: application/json\r\n",
+	            'method'  => 'GET'
+	        ]
+	    ];
+	
+	    $context = stream_context_create($options);
+	    $response = file_get_contents($url, false, $context);
+	    $data = json_decode($response, true);
+	
+	    foreach ($data as $brand) {
+	        if ($brand['name'] === $searchName) {
+	            return $brand['id'];
+	        }
+	    }
+	    return null;
+	}
+
+
+
+      
    
       public function redirectVariantUrl($contentId,$variantNane,$redirectUrl=false){
 	      
