@@ -1,8 +1,6 @@
 <?php
-class trendyolHelpers{
 
- 
-  public function replacer($php_data,$ham_text){					
+function replacer($php_data,$ham_text){					
 		$php_data = (array) $php_data;
 		foreach ($php_data as $key => $value) {                				 
 			if(!is_array($value)){		
@@ -14,7 +12,7 @@ class trendyolHelpers{
 	}
 
 
-  public function getRequestUrl($appendPath,$queryData=[]){	  
+   function getRequestUrl($appendPath,$queryData=[]){	  
     $baseUrl = sprintf($this->baseUrl, $this->partnerId);
     $httpQuery = buildHttpQuery($queryData);
     $query = $baseUrl.$appendPath."?".$httpQuery; 	
@@ -24,13 +22,13 @@ class trendyolHelpers{
 
   
 
-  public function createProductSchemeFromDetailData($item, $variants = null, $customData)
+   function createAddScheme($item, $variants = null, $customData=null)
 {
     // Ana ürün bilgilerini oluşturuyoruz
     $mainProduct = [
-        'title' => $item->title,
+        'title' => $item->name,
         'brandId' => (int)$item->metaBrand->id,
-        'productCode' => $item->productCode,
+        'productMainId' => $item->productCode,
         'description' => $item->title,
         'currencyType' => 'TRY',
         'vatRate' => $item->tax,
@@ -43,7 +41,7 @@ class trendyolHelpers{
     $variants = $variants ?? $item->allVariants;
 
     $createProduct = [];
-barcode
+
     // Her varyant için yeni bir ürün oluşturarak ana ürün bilgileriyle birleştiriyoruz
     foreach ($variants as $variant) {
         $variantData = [
@@ -70,7 +68,7 @@ barcode
 }
 
 
-  public function buildHttpQuery($queryData = []) {
+   function buildHttpQuery($queryData = []) {
       $urlQuery = "";
       if (is_array($queryData) || is_object($queryData)) {
         $urlQuery = http_build_query($queryData);
@@ -80,7 +78,7 @@ barcode
 
 
 
-  public function listPaths(array $array=[], string $parent="", array &$names=[]):array
+   function listPaths(array $array=[], string $parent="", array &$names=[]):array
    {
               
 	  foreach($array as $data){
@@ -103,7 +101,7 @@ barcode
 	   return $names;
    }
 
-   public function redicectImageUrl($imageUrl){
+    function redicectImageUrl($imageUrl){
 
     // URL'de geçersiz karakterleri temizlemek için filter_var kullan
             $cleanUrl = filter_var($imageUrl, FILTER_SANITIZE_URL);
@@ -116,12 +114,12 @@ barcode
     }
 
 
-    public function barcodeToLink($_requestData){
-    $productContentId = $trendyol->getBarcodeToFields($barcode,"productContentId"); //
+     function barcodeToLink($_requestData){
+              $productContentId = $trendyol->getBarcodeToFields($barcode,"productContentId"); //
           header('Location: https://www.trendyol.com/xyz/abc-p-'.$productContentId);   
       }
 
-      public function urlToId($url){
+     function urlToId($url){
             $url = filter_var($url, FILTER_SANITIZE_URL);
             if (!filter_var($url, FILTER_VALIDATE_URL)) {
                 return null; 
@@ -138,9 +136,33 @@ barcode
 
 
 
+    function getDetailProductData($id){
+    $url = "https://apigw.trendyol.com/discovery-web-productgw-service/api/productDetail/" . $id;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    if ($httpCode !== 200) {
+        throw new Exception("Ürün detayına erişilemiyor. HTTP Kod: " . $httpCode);
+    }
+    $decodedData = json_decode($response, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception("Geçersiz JSON formatı alındı.");
+    }
+    return $decodedData;
+   }
+
+   function createProductDetail($id){
+    $productData = getDetailProductData($id);
+      $scheme  =  createAddScheme($productData,$productData->allVariants);
+     var_export($scheme);
+   }
+
+   
 
 
- }
 
 
     
