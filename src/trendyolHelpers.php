@@ -14,12 +14,60 @@ class trendyolHelpers{
 	}
 
 
-  private function getRequestUrl($appendPath,$queryData=[]){	  
+  public function getRequestUrl($appendPath,$queryData=[]){	  
     $baseUrl = sprintf($this->baseUrl, $this->partnerId);
     $httpQuery = buildHttpQuery($queryData);
     $query = $baseUrl.$appendPath."?".$httpQuery; 	
     return $query;
   }
+
+
+  
+
+  public function createProductSchemeFromDetailData($item, $variants = null, $customData)
+{
+    // Ana ürün bilgilerini oluşturuyoruz
+    $mainProduct = [
+        'title' => $item->title,
+        'brandId' => (int)$item->metaBrand->id,
+        'productCode' => $item->productCode,
+        'description' => $item->title,
+        'currencyType' => 'TRY',
+        'vatRate' => $item->tax,
+        'dimensionalWeight' => $item->dimensionalWeight ?? 1,
+        'cargoCompanyId' => $item->cargoCompanyId ?? 27,
+        'categoryId' => (int)$item->originalCategory->id
+    ];
+
+    // Eğer varyantlar belirtilmemişse tüm varyantları kullanıyoruz
+    $variants = $variants ?? $item->allVariants;
+
+    $createProduct = [];
+barcode
+    // Her varyant için yeni bir ürün oluşturarak ana ürün bilgileriyle birleştiriyoruz
+    foreach ($variants as $variant) {
+        $variantData = [
+            'quantity' => (int)($variant->quantity ?? 0),
+            'stockCode' => $variant->stockCode,
+            'barcode' => $variant->barcode,
+            'salePrice' => (float)round($variant->salePrice),
+            'images' => array_map(function ($image) {
+                return ["url" => "https://cdn.dsmcdn.com/" . $image];
+            }, $variant->images ?? $item->images),
+            'attributes' => array_map(function ($attribute) {
+                return [
+                    'attributeId' => $attribute->key->id,
+                    'attributeValueId' => $attribute->value->id
+                ];
+            }, $item->attributes)
+        ];
+
+        // Ana ürün bilgileri ve varyant bilgilerini birleştirip diziye ekliyoruz
+        $createProduct[] = array_merge($mainProduct, $variantData);
+    }
+
+    return $createProduct;
+}
 
 
   public function buildHttpQuery($queryData = []) {
@@ -55,45 +103,46 @@ class trendyolHelpers{
 	   return $names;
    }
 
- }
+   public function redicectImageUrl($imageUrl){
 
-
- function redicectImageUrl($imageUrl){
-
-// URL'de geçersiz karakterleri temizlemek için filter_var kullan
-        $cleanUrl = filter_var($imageUrl, FILTER_SANITIZE_URL);
-            
-        // URL'nin geçerli olup olmadığını kontrol et
-        if (filter_var($cleanUrl, FILTER_VALIDATE_URL)) {
-          header("Location: $cleanUrl", true, 302);
-        }
-
- }
-
-
- function barcodeToLink($_requestData){
- $productContentId = $trendyol->getBarcodeToFields($barcode,"productContentId"); //
-      header('Location: https://www.trendyol.com/xyz/abc-p-'.$productContentId);   
-  }
-
-
-
-
-
-
-  function urlToId($url){
-        $url = filter_var($url, FILTER_SANITIZE_URL);
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            return null; 
-        }
-        $parts = explode('-p-', $url);
-        if (isset($parts[1])) {
-            if (preg_match('/\d+/', $parts[1], $matches)) {
-                return $matches[0]; // Eğer rakam varsa, ID'yi döndür
+    // URL'de geçersiz karakterleri temizlemek için filter_var kullan
+            $cleanUrl = filter_var($imageUrl, FILTER_SANITIZE_URL);
+                
+            // URL'nin geçerli olup olmadığını kontrol et
+            if (filter_var($cleanUrl, FILTER_VALIDATE_URL)) {
+              header("Location: $cleanUrl", true, 302);
             }
-        }
 
-        return null;
     }
 
 
+    public function barcodeToLink($_requestData){
+    $productContentId = $trendyol->getBarcodeToFields($barcode,"productContentId"); //
+          header('Location: https://www.trendyol.com/xyz/abc-p-'.$productContentId);   
+      }
+
+      public function urlToId($url){
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                return null; 
+            }
+            $parts = explode('-p-', $url);
+            if (isset($parts[1])) {
+                if (preg_match('/\d+/', $parts[1], $matches)) {
+                    return $matches[0]; // Eğer rakam varsa, ID'yi döndür
+                }
+            }
+
+            return null;
+        }
+
+
+
+
+
+ }
+
+
+    
+
+  

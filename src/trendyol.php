@@ -106,19 +106,19 @@ use trendyolHelpers;
 		if(!is_array($systemData)){
         
 			  $product->title            = $systemData->title; 
-			  $product->brandId          = (integer) $brandId; 
+			  $product->brandId          = (integer)$systemData->brandId; 
               
-			  $product->quantity          = (integer) $systemData->quantity;
-              $product->stockCode         = "OTM-".$systemData->stockCode;
-              $product->dimensionalWeight = 1;
+			  $product->quantity          = (integer) $systemData->quantity??0;
+              $product->stockCode         = $systemData->stockCode;
+              $product->dimensionalWeight = $systemData->dimensionalWeight??1;
               $product->description       = $systemData->name;
               $product->currencyType      = "TRY";
                    
               //$product->listPrice        = (float)round($systemData->salePrice*1.38);
               $product->salePrice        = (float)round($systemData->salePrice);
               $product->vatRate         = $systemData->tax;
-              $product->cargoCompanyId    = 27;
-              $product->images =$image;
+              $product->cargoCompanyId    = $systemData->cargoCompanyId??27;
+              $product->images =$systemData->images;
               
               if(isset($systemData->categoryid )){
 				$product->categoryId = $systemData->categoryid;
@@ -140,13 +140,27 @@ use trendyolHelpers;
 		return  json_decode($createProduct);       
 	} 
 
-	 
-
-	public function createProduct($requestData =""){
-
 	
+
+    public function getTrendyolCategoryIdByName($categoryName){
+		$trendyolCategories = $this->getAllCategories();
+		if (!isset($trendyolCategories['categories'])) {
+			throw new Exception("'categories' anahtarı eksik.");
+		}
+		$categories = $trendyolCategories['categories'];
+		$listPaths = $this->listPaths($categories);
+		$keys = $this->arrayFind($categoryName, $listPaths);
+		return $keys[0] ?? "";
+	}
+
+
+
+
+	public function createProduct($items =[]){
+            
+		
 		$this->setRequestUrl("/v2/products");
-		$this->requestData  = $requestData;
+		$this->requestData  = ['items'=>$items];
 		$result_curl 		 = $this->sendRequest("POST");
 		return $this->result = json_decode($result_curl);
    } 
@@ -280,16 +294,26 @@ use trendyolHelpers;
    }
 
   
-  public function getCategories(){ 
-
-		if(!file_exists('trendyolCategory.json') ){
-           $url= "https://api.trendyol.com/sapigw/product-categories";
-			$result_curl = $this->sendRequest($url);
-			file_put_contents('trendyolCategory.json', $result_curl);
-		}
-		return  $this->result = json_decode(file_get_contents("trendyolCategory.json"),true);
-	}
-   
+   public function getAllCategories($cache = true)
+   {
+	  // _stroga_dir_."platforms/trendyol/trendyolCategory.json";
+	   $jsonFile = 'trendyolCategory.json';
+	   if (!$cache || !file_exists($jsonFile)) {
+		   $url = "https://api.trendyol.com/sapigw/product-categories";
+		   $result_curl = $this->sendRequest($url);
+		   
+		   $decoded_result = json_decode($result_curl, true);   
+		   if (json_last_error() === JSON_ERROR_NONE) {
+			   file_put_contents($jsonFile, $result_curl);
+		   } else {
+			   throw new Exception("Geçersiz JSON formatı alındı.");
+		   }
+		   return $decoded_result;
+	   }
+	   $jsonFileData = file_get_contents($jsonFile);
+	   //$jsonFileData['categories'] doğrudan categories verisini dönebiliriz.
+	   return json_decode($jsonFileData, true);
+   }
 
 	
 
