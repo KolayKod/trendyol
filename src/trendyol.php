@@ -295,7 +295,7 @@ use trendyolHelpers;
 
 	public function getBarcodeToField($barcode, $getField)
 	{
-		// Ürün bilgilerini barkod ile alıyoruz
+		// productMainId de kullanım için opsiyon koyabiliriz.
 		$result = $this->getProduct(["barcode" => $barcode]);
 	
 		// Eğer ürün bulunduysa
