@@ -1,4 +1,5 @@
 <?php namespace trendyol;
+use trendyolHelpers;
 // Versiyon: 0.5 = 07-11-2023 11:57
 
    /*
@@ -289,6 +290,40 @@
 		return  $this->result = json_decode(file_get_contents("trendyolCategory.json"),true);
 	}
    
+
+	
+
+	public function getBarcodeToField($barcode, $getField)
+	{
+		// Ürün bilgilerini barkod ile alıyoruz
+		$result = $this->getProduct(["barcode" => $barcode]);
+	
+		// Eğer ürün bulunduysa
+		if (isset($result->totalElements) && $result->totalElements > 0) {
+			$product = $result->content[0];
+	
+			// Talep edilen alanı döndürmek için
+			switch ($getField) {
+				case 'modelCode':
+					return $product->modelCode;  // Model kodu döner
+				case 'imageUrl':
+					return $product->images[0]->url;  // İlk resim URL'sini döner
+				case 'title':
+					return $product->title;  // Ürün başlığını döner
+				case 'link':
+					return $product->link;  // Ürün linkini döner
+				case 'contentid':
+					return $product->contentId;  // İçerik ID'sini döner
+				default:
+					return false;
+			}
+		}
+	
+		return "No product found.";  // Ürün bulunamazsa
+	}
+    
+
+	
    
    public function getOrder($query_data=[]){	
 	    // //status=Created&orderByDirection=DESC&size=10   
@@ -319,7 +354,8 @@
                     return true;
 	}else( isset($returnData->status) && ($returnData->status ==404) ){
 			 return false;
-	}  
+	} 
+
    }
    
     
@@ -328,63 +364,22 @@
 
 
 
-   public function listPaths(array $array=[], string $parent="", array &$names=[]):array
-   {
-              
-	  foreach($array as $data){
-		   if(count($data["subCategories"])>0){
-						   if($parent ==""){
-							  $name = $data['name'];
-						   }else{
-							   $name = $parent." | ".$data['name'];          
-						   }
-				   //$names[] = $name;
-				   $names[$data['id']] =null;
-			  $this->listPaths($data['subCategories'],$name,$names);                  
-						  
-		   }else{
-				   //$name = $parent." | ".$data['name']."(".$data['id'].")";
-				   $name = $data['name'];
-				   $names[$data['id']] = $name;  
-		   }    
-	 }        
-	   return $names;
-   }
+   
 
 
 
 
    public function getUnixTime($dateTime = "now", $andDate = true) {
-    if ($andDate && strpos($dateTime, ":") === false) {
-        $dateTime .= " 23:59:59";
-    }
-    $unixTime = strtotime($dateTime) * 1000;
-    return $unixTime;
-  }
-public function buildHttpQuery($queryData = []) {
-	    $urlQuery = "";
-	    if (is_array($queryData) || is_object($queryData)) {
-	        $urlQuery = http_build_query($queryData);
-	    }
-	    return $urlQuery;
- }
-	private function getRequestUrl($appendPath,$queryData=[]){	  
-	       $baseUrl = sprintf($this->baseUrl, $this->partnerId);
-	       $httpQuery = buildHttpQuery($queryData);
-	       $query = $baseUrl.$appendPath."?".$httpQuery; 	
-	    return $query;
-	} 
+		if ($andDate && strpos($dateTime, ":") === false) {
+			$dateTime .= " 23:59:59";
+		}
+		$unixTime = strtotime($dateTime) * 1000;
+		return $unixTime;
+   }
+	
+	 
    
-    public function replacer($php_data,$ham_text){					
-		$php_data = (array) $php_data;
-		foreach ($php_data as $key => $value) {                				 
-			if(!is_array($value)){		
-				$templateVeri[]  = "{{".$key."}}";
-				$dinamikVeri[]  = $php_data[$key];
-			}				
-		}			  	 					
-		return str_replace($templateVeri, $dinamikVeri, $ham_text);	 
-	}
+   
 
        
 	public function getBrandIdByName($searchName) {
