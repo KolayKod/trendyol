@@ -255,19 +255,17 @@ use trendyolHelpers;
    } 
 
    public  function filterVariantAttributes($attributeData){
-        
-		$return =(object)[];
-	$idToValue = ["47"=>"color","338"=>"size","92"=>"boyutEbat"];
-	//  $idToValue = ["47","338","92"];
-	
-	foreach($attributeData as $attribute){
-		
+	$return =(object)[];
+	$idToValue = [
+					"47"=>"color",
+					"338"=>"size",
+					"92"=>"boyutEbat"
+				];
+	foreach($attributeData as $attribute){		
 			if(isset($idToValue[$attribute->attributeId])){
-				
 				$return->{$idToValue[$attribute->attributeId]} = $attribute->attributeValue;
 			}
 	}
-	
 	return  $return; 
 	}
 
