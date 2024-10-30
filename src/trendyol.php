@@ -314,6 +314,38 @@ use trendyolHelpers;
    }
 
 	
+   public function getCategoryAttributes( int $id,$onlyRequired=false)
+   {
+	  
+		   $url = "https://api.trendyol.com/sapigw/product-categories/${id}/attributes";
+		   $response = $this->sendRequest($url);
+		   
+		   $attributes = json_decode($response); 
+
+		   if (json_last_error() !== JSON_ERROR_NONE) {
+				throw new Exception("Geçersiz JSON formatı alındı: " . json_last_error_msg());
+			}
+
+         
+			 if(issets($attributes->categoryAttributes)){
+
+		        if ($onlyRequired) {
+					return array_filter($attributes->categoryAttributes, function($attribute) {
+						return $attribute->required === true;
+					});
+				}else{
+
+					$attributes->categoryAttributes;
+				}
+
+			 }else{
+                return $attributes;
+			 }
+
+
+		   
+   }
+
 
 	public function getBarcodeToField($barcode, $getField)
 	{
@@ -381,13 +413,6 @@ use trendyolHelpers;
    }
    
     
-   
- 
-
-
-
-   
-
 
 
 
