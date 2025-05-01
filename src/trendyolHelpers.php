@@ -19,7 +19,25 @@ function replacer($php_data,$ham_text){
     return $query;
   }
 
-
+public function redirectVariantUrl($contentId,$variantNane,$redirectUrl=false){
+	      
+	      $url = "https://www.trendyol.com/brand/productname-p-".$contentId;
+			        $ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_HEADER, true);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$a = curl_exec($ch);
+				$finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+				$v = str_replace(",","-",strtolower($variantNane));
+	      if($redirectUrl ==true){
+		   header("Location:".$finalUrl."?v=".$v);   
+	      }else{
+		      return $finalUrl;
+	      }
+   
+}
+  
   
 
    function createAddScheme($item, $variants = null, $customData=null)
