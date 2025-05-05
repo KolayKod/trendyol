@@ -16,13 +16,16 @@
             "email": "eyupklasvento@gmail.com"
         }
     ],
+    
     "require": {
         "php": ">=8.0.0"
     },
     "autoload": {
         "psr-4": {
             "trendyol\\": "src"
-        }
+        },"files": [
+            "src/trendyolUtility.php"
+        ]
     },
     "minimum-stability": "dev"
 }
