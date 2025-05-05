@@ -1,6 +1,6 @@
 <?php namespace trendyol;
 use trendyolHelpers;
-// Versiyon: 0.5 = 07-11-2023 11:57
+// Versiyon: 0.5 = 05-05-2025 19:13
 
    /*
  
