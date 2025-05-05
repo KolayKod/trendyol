@@ -11,15 +11,22 @@ function replacer($php_data,$ham_text){
 		return str_replace($templateVeri, $dinamikVeri, $ham_text);	 
 	}
 
+function getUnixTime($dateTime = "now", $andDate = true) {
+    if ($andDate && strpos($dateTime, ":") === false) {
+        $dateTime .= " 23:59:59";
+    }
+    $unixTime = strtotime($dateTime) * 1000;
+    return $unixTime;
+}
 
-   function getRequestUrl($appendPath,$queryData=[]){	  
+function getRequestUrl($appendPath,$queryData=[]){	  
     $baseUrl = sprintf($this->baseUrl, $this->partnerId);
     $httpQuery = buildHttpQuery($queryData);
     $query = $baseUrl.$appendPath."?".$httpQuery; 	
     return $query;
-  }
+}
 
-public function redirectVariantUrl($contentId,$variantNane,$redirectUrl=false){
+function redirectVariantUrl($contentId,$variantNane,$redirectUrl=false){
 	      
 	      $url = "https://www.trendyol.com/brand/productname-p-".$contentId;
 			        $ch = curl_init();

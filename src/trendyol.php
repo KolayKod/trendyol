@@ -3,35 +3,17 @@ use trendyolHelpers;
 // Versiyon: 0.5 = 07-11-2023 11:57
 
    /*
-    api dönüş türleri arasında ki ortak noktalar tepit edilecek
-	buna göre hata yakalama ve loglama işlemi yapılacak
-
+ 
 	(new trendyol("114603","sdfgsf","643545"))->getorder();
 	trendyol::getOrder();
- ------------------------------------------
-       $userInput = [
-	    'name' => 'John',
-	    'email' => 'john@example.com',
-	    'age' => 30,
-	    'unwanted_field' => 'some value'
-	];
-	
-	$allowedKeys = [
-	    'name' => '',
-	    'email' => '',
-	    "baseparam" => "basevalue"  // Hem varsayılan değer hem de zorunlu
-	];
-	
-	$filteredInput = array_intersect_key($userInput, $allowedKeys);
-	$finalInput = array_merge($allowedKeys, $filteredInput);
- 
+
    */
   class trendyol{
 	//const facade = 'tendyol'; 
     private $partnerId   = null;
     private $apiKey      = null;   
     private $apiSecret   = null;
-    private $baseUrl      = "https://api.trendyol.com/sapigw/suppliers/%s";
+    private $baseUrl      = "https://apigw.trendyol.com/sapigw/suppliers/%s";
 	
   
     public $result       = null;
@@ -194,7 +176,7 @@ use trendyolHelpers;
 	   
 	    $this->setRequestUrl("/products",$queryData);
       $resultCurl = $this->sendRequest();
-     $resultData =  json_decode($resultCurl)
+     $resultData =  json_decode($resultCurl);
      
 	     if(isset($resultData->errors)){
 		    throw new Exception("trendyol veri getirme hatası: " . var_export($resultData->errors,true));
@@ -317,7 +299,7 @@ use trendyolHelpers;
    public function getCategoryAttributes( int $id,$onlyRequired=false)
    {
 	  
-		   $url = "https://api.trendyol.com/sapigw/product-categories/${id}/attributes";
+		   $url = "https://apigw.trendyol.com/sapigw/product-categories/${id}/attributes";
 		   $response = $this->sendRequest($url);
 		   
 		   $attributes = json_decode($response); 
@@ -412,44 +394,42 @@ use trendyolHelpers;
 
    }
    
-    
 
-
-
-   public function getUnixTime($dateTime = "now", $andDate = true) {
-		if ($andDate && strpos($dateTime, ":") === false) {
-			$dateTime .= " 23:59:59";
-		}
-		$unixTime = strtotime($dateTime) * 1000;
-		return $unixTime;
-   }
 	
-	 
-   
+		
+	public function searchBrands($searchName) {
+		$url = "https://apigw.trendyol.com/sapigw/brands/by-name?name=" . urlencode($searchName);
+		$response = $this->sendRequest($url);
+		$data = json_decode($response, true);
+		
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new \Exception("Invalid JSON response received");
+		}
+		
+		return $data ?: null;
+	}
    
 
        
-	public function getBrandIdByName($searchName) {
-	   $url = "https://api.trendyol.com/sapigw/brands/by-name?name=". urlencode($searchName);
-	    $options = [
-	        'http' => [
-	            'header'  => "Content-type: application/json\r\n",
-	            'method'  => 'GET'
-	        ]
-	    ]; 
-	
-	    $context = stream_context_create($options);
-	    $response = file_get_contents($url, false, $context);
-	    $data = json_decode($response, true);
-	
-	    foreach ($data as $brand) {
-	        if ($brand['name'] === $searchName) {
-	            return $brand['id'];
-	        }
-	    }
-	    return null;
+	public function getBrandIdByName($exactBrandName) {
+		try {
+			$brands = $this->searchBrands($exactBrandName);
+			
+			if (!$brands) {
+				return null;
+			}
+			
+			foreach ($brands as $brand) {
+				if (strtolower($brand['name']) === strtolower($exactBrandName)) {
+					return (int)$brand['id'];
+				}
+			}
+			
+			return null;
+		} catch (\Exception $e) {
+			return null;
+		}
 	}
-
 
 
       
